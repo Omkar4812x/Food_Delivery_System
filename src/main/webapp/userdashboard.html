@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - Food Delivery</title>
+    <link rel="stylesheet" href="CSS/style.css?v=6">
+</head>
+<body data-page="customer">
+    <header class="topbar">
+        <div class="brand-row">
+            <span class="brand-mark">FD</span>
+            <span>FoodDesk</span>
+        </div>
+        <nav>
+            <a href="#restaurants">Restaurants</a>
+            <a href="#menu">Menu</a>
+            <a href="#checkout">Checkout</a>
+            <a href="#orders">Orders</a>
+            <button id="logoutBtn" class="ghost-btn">Logout</button>
+        </nav>
+    </header>
+
+    <main class="app-shell customer-layout">
+        <section class="dashboard-hero">
+            <div>
+                <p class="eyebrow">Customer dashboard</p>
+                <h1>Browse restaurants, add meals, and place your order.</h1>
+                <p id="userGreeting" class="muted">Choose from fresh meals available today.</p>
+            </div>
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80" alt="Healthy meal bowls">
+        </section>
+
+        <section id="restaurants">
+            <div class="section-title">
+                <h2>Restaurants</h2>
+                <input id="customerSearch" type="search" placeholder="Search restaurant or cuisine">
+            </div>
+            <div id="restaurantCards" class="restaurant-grid"></div>
+        </section>
+
+        <section id="menu" class="menu-cart-grid">
+            <div>
+                <div class="section-title">
+                    <h2>Menu</h2>
+                    <select id="customerRestaurantFilter"></select>
+                </div>
+                <div id="menuCards" class="menu-grid"></div>
+            </div>
+
+            <aside id="checkout" class="cart-panel">
+                <h2>Your cart</h2>
+                <div id="cartItems" class="cart-items"></div>
+                <div class="cart-total">
+                    <span>Total</span>
+                    <strong id="cartTotal">Rs 0.00</strong>
+                </div>
+                <form id="orderForm" class="stack-form">
+                    <label>Name</label>
+                    <input type="text" name="customerName" required>
+                    <label>Phone</label>
+                    <input type="text" name="customerPhone" required>
+                    <label>Delivery address</label>
+                    <textarea name="deliveryAddress" rows="3" required></textarea>
+                    <label>Payment</label>
+                    <select name="paymentMethod">
+                        <option>Cash on Delivery</option>
+                        <option>UPI</option>
+                        <option>Card</option>
+                    </select>
+                    <button type="submit">Place order</button>
+                </form>
+            </aside>
+        </section>
+
+        <section id="orders">
+            <h2>My orders</h2>
+            <div id="customerOrders" class="orders-list"></div>
+        </section>
+    </main>
+
+    <div id="toast" class="toast"></div>
+    <script src="JS/ajaxhandle.js?v=6"></script>
+</body>
+</html>

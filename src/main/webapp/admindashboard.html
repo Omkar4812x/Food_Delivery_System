@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Food Delivery</title>
+    <link rel="stylesheet" href="CSS/style.css?v=6">
+</head>
+<body data-page="admin">
+    <header class="topbar">
+        <div class="brand-row">
+            <span class="brand-mark">FD</span>
+            <span>FoodDesk Admin</span>
+        </div>
+        <nav>
+            <a href="#restaurants">Restaurants</a>
+            <a href="#menu">Menu</a>
+            <a href="#orders">Orders</a>
+            <a href="#customers">Customers</a>
+            <button id="logoutBtn" class="ghost-btn">Logout</button>
+        </nav>
+    </header>
+
+    <main class="app-shell">
+        <section class="dashboard-hero">
+            <div>
+                <p class="eyebrow">Operations dashboard</p>
+                <h1>Manage restaurants, menus, customers, and delivery orders.</h1>
+                <p class="muted">Use this panel to run the full food delivery workflow for your final project.</p>
+            </div>
+            <img src="https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&w=900&q=80" alt="Food delivery preparation">
+        </section>
+
+        <section id="statsGrid" class="stats-grid"></section>
+
+        <section id="restaurants" class="section-grid">
+            <div>
+                <h2>Add restaurant</h2>
+                <form id="restaurantForm" class="stack-form">
+                    <input type="hidden" name="id">
+                    <label>Name</label>
+                    <input type="text" name="name" placeholder="Restaurant name" required>
+                    <label>Address</label>
+                    <input type="text" name="address" placeholder="Full address" required>
+                    <label>Contact</label>
+                    <input type="text" name="contact" placeholder="Phone number" required>
+                    <label>Cuisines</label>
+                    <input type="text" name="cuisines" placeholder="Pizza, Biryani, Desserts" required>
+                    <div class="form-row">
+                        <div>
+                            <label>Rating</label>
+                            <input type="number" step="0.1" min="1" max="5" name="rating" value="4.2">
+                        </div>
+                        <div>
+                            <label>Delivery time</label>
+                            <input type="text" name="deliveryTime" value="30-40 min">
+                        </div>
+                    </div>
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="open">Open</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                    <button type="submit">Save restaurant</button>
+                    <button type="button" id="resetRestaurantForm" class="ghost-btn">Clear</button>
+                </form>
+            </div>
+            <div>
+                <div class="section-title">
+                    <h2>Restaurants</h2>
+                    <input id="restaurantSearch" type="search" placeholder="Search restaurants">
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Cuisines</th>
+                                <th>Status</th>
+                                <th>Items</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="restaurantTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="menu" class="section-grid">
+            <div>
+                <h2>Add menu item</h2>
+                <form id="menuForm" class="stack-form">
+                    <input type="hidden" name="id">
+                    <label>Restaurant</label>
+                    <select name="restaurantId" id="menuRestaurantSelect" required></select>
+                    <label>Item name</label>
+                    <input type="text" name="name" placeholder="Food item" required>
+                    <label>Description</label>
+                    <input type="text" name="description" placeholder="Short description">
+                    <label>Image URL</label>
+                    <input type="url" name="imageUrl" placeholder="https://example.com/food.jpg">
+                    <div class="form-row">
+                        <div>
+                            <label>Price</label>
+                            <input type="number" step="0.01" min="1" name="price" required>
+                        </div>
+                        <div>
+                            <label>Category</label>
+                            <input type="text" name="category" placeholder="Pizza">
+                        </div>
+                    </div>
+                    <div class="check-row">
+                        <label><input type="checkbox" name="veg" checked> Veg</label>
+                        <label><input type="checkbox" name="available" checked> Available</label>
+                    </div>
+                    <button type="submit">Save menu item</button>
+                    <button type="button" id="resetMenuForm" class="ghost-btn">Clear</button>
+                </form>
+            </div>
+            <div>
+                <div class="section-title">
+                    <h2>Menu items</h2>
+                    <input id="menuSearch" type="search" placeholder="Search menu">
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Preview</th>
+                                <th>Item</th>
+                                <th>Restaurant</th>
+                                <th>Price</th>
+                                <th>Type</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="menuTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="orders">
+            <div class="section-title">
+                <h2>Orders</h2>
+                <select id="orderStatusFilter">
+                    <option value="">All orders</option>
+                    <option value="pending">Pending</option>
+                    <option value="preparing">Preparing</option>
+                    <option value="out_for_delivery">Out for delivery</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div id="adminOrders" class="orders-list"></div>
+        </section>
+
+        <section id="customers">
+            <h2>Customers</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast" class="toast"></div>
+    <script src="JS/ajaxhandle.js?v=6"></script>
+</body>
+</html>

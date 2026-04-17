@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Login - Food Delivery System</title>
+    <link rel="stylesheet" href="CSS/style.css?v=6">
+</head>
+<body class="auth-page">
+    <main class="auth-shell world-class-auth">
+        <section class="auth-visual">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80" alt="Fresh prepared food">
+            <div class="auth-copy">
+                <p class="eyebrow">FoodDesk Prime</p>
+                <h1>Food delivery administration from a clean starting point.</h1>
+                <p>Sign in with the single admin account, then add your own restaurants, menu items, customers, and orders.</p>
+                <div class="auth-metrics">
+                    <span><strong>1</strong> Admin account</span>
+                    <span><strong>0</strong> Sample restaurants</span>
+                    <span><strong>0</strong> Sample orders</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="auth-panel">
+            <div class="brand-row">
+                <span class="brand-mark">FD</span>
+                <span>FoodDesk Prime</span>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" data-auth-tab="login">Login</button>
+                <button class="tab-btn" data-auth-tab="register">Sign up</button>
+            </div>
+
+            <form id="loginForm" class="auth-form" action="LoginController" method="post" data-inline-login="enabled">
+                <h2>Welcome back</h2>
+                <p class="muted">Sign in to the admin dashboard and create your own project data.</p>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="admin@food.com" required>
+                <label>Password</label>
+                <input type="password" name="password" placeholder="admin123" required>
+                <button type="submit">Login</button>
+                <p class="hint">Admin login: <strong>admin@food.com</strong> / <strong>admin123</strong></p>
+            </form>
+
+            <form id="registerForm" class="auth-form hidden">
+                <h2>Create customer account</h2>
+                <p class="muted">Start ordering from available restaurants.</p>
+                <label>Name</label>
+                <input type="text" name="name" placeholder="Your name" required>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="you@example.com" required>
+                <label>Phone</label>
+                <input type="text" name="phone" placeholder="9876543210" required>
+                <label>Address</label>
+                <input type="text" name="address" placeholder="Delivery address" required>
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Choose password" required>
+                <button type="submit">Create account</button>
+            </form>
+
+            <div id="message" class="message"></div>
+        </section>
+    </main>
+    <script>
+        (function () {
+            var tabs = document.querySelectorAll("[data-auth-tab]");
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].addEventListener("click", function () {
+                    for (var j = 0; j < tabs.length; j++) {
+                        tabs[j].classList.remove("active");
+                    }
+                    this.classList.add("active");
+                    var tab = this.getAttribute("data-auth-tab");
+                    document.getElementById("loginForm").classList.toggle("hidden", tab !== "login");
+                    document.getElementById("registerForm").classList.toggle("hidden", tab !== "register");
+                    document.getElementById("message").textContent = "";
+                    document.getElementById("message").className = "message";
+                });
+            }
+        })();
+        (function () {
+            var form = document.getElementById("registerForm");
+            var message = document.getElementById("message");
+            if (!form) {
+                return;
+            }
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                if (message) {
+                    message.textContent = "Creating account...";
+                    message.className = "message";
+                }
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "RegisterController", true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState !== 4) {
+                        return;
+                    }
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        if (message) {
+                            message.textContent = "Account created. Login with your new credentials.";
+                            message.className = "message";
+                        }
+                        form.reset();
+                        document.querySelector('[data-auth-tab="login"]').click();
+                    } else if (message) {
+                        message.textContent = "Registration failed. Email may already exist.";
+                        message.className = "message error";
+                    }
+                };
+                xhr.send(new FormData(form));
+            });
+        })();
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var message = document.getElementById("message");
+            if (params.get("error") === "1" && message) {
+                message.textContent = "Invalid email or password.";
+                message.className = "message error";
+            }
+        })();
+    </script>
+</body>
+</html>
